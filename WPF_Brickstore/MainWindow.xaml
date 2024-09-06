@@ -7,6 +7,46 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="9*"/>
+        </Grid.RowDefinitions>
 
+        <Grid x:Name="menu">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" 
+                       Text="Szűrés ItemID-re:  " 
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Right"/>
+            <TextBox Grid.Column="1" 
+                     x:Name="IDFilter" 
+                     Width="150" 
+                     HorizontalAlignment="Left" 
+                     TextChanged="FilterItems"/>
+
+            <TextBlock Grid.Column="2" 
+                       Text="Szűrés ItemName-re:  " 
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Right"/>
+            <TextBox Grid.Column="3" 
+                     x:Name="nevFilter" 
+                     Width="150" 
+                     HorizontalAlignment="Left"
+                     TextChanged="FilterItems"/>
+
+            <Button Grid.Column="5" 
+                    Content="Fájl megnyitása" 
+                    Width="120" 
+                    Click="OpenFile_Click"/>
+        </Grid>
+        
     </Grid>
 </Window>

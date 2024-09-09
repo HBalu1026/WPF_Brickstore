@@ -14,9 +14,6 @@ using System.ComponentModel;
 
 namespace WPF_Brickstore
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private List<Item> _items;
@@ -31,23 +28,53 @@ namespace WPF_Brickstore
 
         private void LoadData()
         {
-            _items = DataLoader.LoadItems("C:\\Users\\hernadi.balazs\\Downloads\\brickstore_parts_3180-1-tank-truck.bsx");
+            _items = DataLoader.LoadItems("C:\\Users\\hernadi.balazs\\Downloads\\brickstore_parts_7288-1-mobile-police-unit.bsx");
             _view = CollectionViewSource.GetDefaultView(_items);
             ItemsDataGrid.ItemsSource = _view;
         }
 
         private void SetUpFilter()
         {
-            FilterTextBox.TextChanged += (s, e) =>
+            FilterTextBoxId.TextChanged += (s, e) =>
             {
                 _view.Filter = item =>
                 {
-                    if (string.IsNullOrEmpty(FilterTextBox.Text))
+                    if (string.IsNullOrEmpty(FilterTextBoxId.Text))
                         return true;
 
                     var itemData = item as Item;
-                    return itemData.ItemID.StartsWith(FilterTextBox.Text, StringComparison.OrdinalIgnoreCase) ||
-                           itemData.ItemName.StartsWith(FilterTextBox.Text, StringComparison.OrdinalIgnoreCase);
+                    return //itemData.ItemID.StartsWith(FilterTextBoxId.Text, StringComparison.OrdinalIgnoreCase) ||
+                           (itemData.ItemID.StartsWith(FilterTextBoxId.Text, StringComparison.OrdinalIgnoreCase) &&
+                           itemData.ItemName.StartsWith(FilterTextBoxName.Text, StringComparison.OrdinalIgnoreCase) &&
+                           itemData.ItemName.StartsWith(FilterTextBoxCategory.Text, StringComparison.OrdinalIgnoreCase));
+                };
+            };
+            FilterTextBoxName.TextChanged += (s, e) =>
+            {
+                _view.Filter = item =>
+                {
+                    if (string.IsNullOrEmpty(FilterTextBoxName.Text))
+                        return true;
+                    
+                    var itemData = item as Item;
+                    return //itemData.ItemID.StartsWith(FilterTextBoxName.Text, StringComparison.OrdinalIgnoreCase) ||
+                           (itemData.ItemID.StartsWith(FilterTextBoxId.Text, StringComparison.OrdinalIgnoreCase) &&
+                           itemData.ItemName.StartsWith(FilterTextBoxName.Text, StringComparison.OrdinalIgnoreCase) &&
+                           itemData.ItemName.StartsWith(FilterTextBoxCategory.Text, StringComparison.OrdinalIgnoreCase));
+                };
+            };
+            FilterTextBoxCategory.TextChanged += (s, e) =>
+            {
+                _view.Filter = item =>
+                {
+                    if (string.IsNullOrEmpty(FilterTextBoxCategory.Text))
+                        return true;
+
+                    var itemData = item as Item;
+                    return //itemData.ItemID.StartsWith(FilterTextBoxName.Text, StringComparison.OrdinalIgnoreCase) ||
+                           (itemData.ItemID.StartsWith(FilterTextBoxId.Text, StringComparison.OrdinalIgnoreCase) &&
+                           itemData.ItemName.StartsWith(FilterTextBoxName.Text, StringComparison.OrdinalIgnoreCase) &&
+                           itemData.ItemName.StartsWith(FilterTextBoxCategory.Text, StringComparison.OrdinalIgnoreCase));
                 };
             };
         }

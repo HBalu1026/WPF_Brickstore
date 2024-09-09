@@ -8,7 +8,19 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <DockPanel>
-            <TextBox x:Name="FilterTextBox" DockPanel.Dock="Top" Margin="5"/>
+            <Button x:Name="OpenFile"
+                    DockPanel.Dock="Top"
+                    Margin="5">Fájl kiválasztása</Button>
+            <TextBlock DockPanel.Dock="Top"
+                       Margin="5">Id:</TextBlock>
+            <TextBox x:Name="FilterTextBoxId" DockPanel.Dock="Top" Margin="5"/>
+            <TextBlock DockPanel.Dock="Top"
+                       Margin="5">Name:</TextBlock>
+            <TextBox x:Name="FilterTextBoxName" DockPanel.Dock="Top" Margin="5"/>
+            <TextBlock DockPanel.Dock="Top"
+                       Margin="5">Category:</TextBlock>
+            <TextBox x:Name="FilterTextBoxCategory" DockPanel.Dock="Top" Margin="5"/>
+
             <DataGrid x:Name="ItemsDataGrid" AutoGenerateColumns="True" DockPanel.Dock="Top" Margin="5"/>
         </DockPanel>
     </Grid>

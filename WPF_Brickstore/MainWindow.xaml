@@ -10,7 +10,8 @@
         <DockPanel>
             <Button x:Name="OpenFile"
                     DockPanel.Dock="Top"
-                    Margin="5">Fájl kiválasztása</Button>
+                    Margin="5"
+                    Click="button1_Click">Fájl kiválasztása</Button>
             <TextBlock DockPanel.Dock="Top"
                        Margin="5">Id:</TextBlock>
             <TextBox x:Name="FilterTextBoxId" DockPanel.Dock="Top" Margin="5"/>

@@ -11,6 +11,7 @@ using System.Windows.Shapes;
 using System.Xml.Linq;
 using System.IO;
 using System.ComponentModel;
+using Microsoft.Win32;
 
 namespace WPF_Brickstore
 {
@@ -22,13 +23,12 @@ namespace WPF_Brickstore
         public MainWindow()
         {
             InitializeComponent();
-            LoadData();
             SetUpFilter();
         }
-
-        private void LoadData()
+        private void button1_Click(object sender, EventArgs e)
         {
-            _items = DataLoader.LoadItems("C:\\Users\\hernadi.balazs\\Downloads\\brickstore_parts_7288-1-mobile-police-unit.bsx");
+            var dialog = new OpenFileDialog();
+            _items = DataLoader.LoadItems(dialog.FileName);
             _view = CollectionViewSource.GetDefaultView(_items);
             ItemsDataGrid.ItemsSource = _view;
         }

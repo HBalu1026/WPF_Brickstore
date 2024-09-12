@@ -12,6 +12,7 @@ using System.Xml.Linq;
 using System.IO;
 using System.ComponentModel;
 using Microsoft.Win32;
+using System.Windows.Controls.Primitives;
 
 namespace WPF_Brickstore
 {
@@ -24,13 +25,28 @@ namespace WPF_Brickstore
         {
             InitializeComponent();
             SetUpFilter();
+           
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            var dialog = new OpenFileDialog();
-            _items = DataLoader.LoadItems(dialog.FileName);
-            _view = CollectionViewSource.GetDefaultView(_items);
-            ItemsDataGrid.ItemsSource = _view;
+            List<Brick> bricks = new List<Brick>();
+            OpenFileDialog ofd = new OpenFileDialog();
+            if (ofd.ShowDialog() == true)
+            {
+                try
+                {
+                    XDocument xaml = XDocument.Load(ofd.FileName);
+                    foreach (var elem in xaml.Descendants("Item"))
+                    {
+                        bricks.Add(new Brick($"{elem.Element("ItemID").Value};{elem.Element("ItemName").Value};{elem.Element("CategoryName").Value};{elem.Element("ColorName").Value};{elem.Element("Qty").Value};"));
+                    }
+                    ItemsDataGrid.ItemsSource = bricks;
+                }
+                catch (System.Xml.XmlException)
+                {
+                    MessageBox.Show("Ez a fájl nem megfelelő fomrátumú!");
+                }
+            }
         }
 
         private void SetUpFilter()
@@ -43,10 +59,9 @@ namespace WPF_Brickstore
                         return true;
 
                     var itemData = item as Item;
-                    return //itemData.ItemID.StartsWith(FilterTextBoxId.Text, StringComparison.OrdinalIgnoreCase) ||
-                           (itemData.ItemID.StartsWith(FilterTextBoxId.Text, StringComparison.OrdinalIgnoreCase) &&
+                    return itemData.ItemID.StartsWith(FilterTextBoxId.Text, StringComparison.OrdinalIgnoreCase) &&
                            itemData.ItemName.StartsWith(FilterTextBoxName.Text, StringComparison.OrdinalIgnoreCase) &&
-                           itemData.ItemName.StartsWith(FilterTextBoxCategory.Text, StringComparison.OrdinalIgnoreCase));
+                           itemData.CategoryName == cbCategory.SelectedValue;
                 };
             };
             FilterTextBoxName.TextChanged += (s, e) =>
@@ -57,13 +72,12 @@ namespace WPF_Brickstore
                         return true;
                     
                     var itemData = item as Item;
-                    return //itemData.ItemID.StartsWith(FilterTextBoxName.Text, StringComparison.OrdinalIgnoreCase) ||
-                           (itemData.ItemID.StartsWith(FilterTextBoxId.Text, StringComparison.OrdinalIgnoreCase) &&
+                    return itemData.ItemID.StartsWith(FilterTextBoxId.Text, StringComparison.OrdinalIgnoreCase) &&
                            itemData.ItemName.StartsWith(FilterTextBoxName.Text, StringComparison.OrdinalIgnoreCase) &&
-                           itemData.ItemName.StartsWith(FilterTextBoxCategory.Text, StringComparison.OrdinalIgnoreCase));
+                           itemData.CategoryName == cbCategory.SelectedValue;
                 };
             };
-            FilterTextBoxCategory.TextChanged += (s, e) =>
+            cbCategory.value
             {
                 _view.Filter = item =>
                 {
@@ -71,10 +85,9 @@ namespace WPF_Brickstore
                         return true;
 
                     var itemData = item as Item;
-                    return //itemData.ItemID.StartsWith(FilterTextBoxName.Text, StringComparison.OrdinalIgnoreCase) ||
-                           (itemData.ItemID.StartsWith(FilterTextBoxId.Text, StringComparison.OrdinalIgnoreCase) &&
+                    return itemData.ItemID.StartsWith(FilterTextBoxId.Text, StringComparison.OrdinalIgnoreCase) &&
                            itemData.ItemName.StartsWith(FilterTextBoxName.Text, StringComparison.OrdinalIgnoreCase) &&
-                           itemData.ItemName.StartsWith(FilterTextBoxCategory.Text, StringComparison.OrdinalIgnoreCase));
+                           itemData.CategoryName == cbCategory.SelectedValue;
                 };
             };
         }
@@ -87,22 +100,5 @@ namespace WPF_Brickstore
         public string CategoryName { get; set; }
         public string ColorName { get; set; }
         public int Qty { get; set; }
-    }
-
-    public class DataLoader
-    {
-        public static List<Item> LoadItems(string filePath)
-        {
-            XDocument xaml = XDocument.Load(filePath);
-            var items = xaml.Descendants("Item").Select(elem => new Item
-            {
-                ItemID = elem.Element("ItemID")?.Value,
-                ItemName = elem.Element("ItemName")?.Value,
-                CategoryName = elem.Element("CategoryName")?.Value,
-                ColorName = elem.Element("ColorName")?.Value,
-                Qty = int.Parse(elem.Element("Qty")?.Value ?? "0")
-            }).ToList();
-            return items;
-        }
     }
 }

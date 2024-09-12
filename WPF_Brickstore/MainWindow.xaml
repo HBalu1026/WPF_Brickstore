@@ -20,7 +20,11 @@
             <TextBox x:Name="FilterTextBoxName" DockPanel.Dock="Top" Margin="5"/>
             <TextBlock DockPanel.Dock="Top"
                        Margin="5">Category:</TextBlock>
-            <TextBox x:Name="FilterTextBoxCategory" DockPanel.Dock="Top" Margin="5"/>
+            <ComboBox x:Name="cbCategory"
+                      DockPanel.Dock="Top"
+                      Margin="5">
+                <ComboBoxItem Content=""/>
+            </ComboBox>
 
             <DataGrid x:Name="ItemsDataGrid" AutoGenerateColumns="True" DockPanel.Dock="Top" Margin="5"/>
         </DockPanel>

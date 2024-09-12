@@ -77,11 +77,11 @@ namespace WPF_Brickstore
                            itemData.CategoryName == cbCategory.SelectedValue;
                 };
             };
-            cbCategory.value
+            cbCategory.SelectionChanged += (s, e) => {
             {
                 _view.Filter = item =>
                 {
-                    if (string.IsNullOrEmpty(FilterTextBoxCategory.Text))
+                    if (string.IsNullOrEmpty(cbCategory.SelectedItem))
                         return true;
 
                     var itemData = item as Item;
